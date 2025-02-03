@@ -44,6 +44,7 @@ const LoginPage = ({ role }) => {
   const [passwordError, setPasswordError] = useState(false);
   //   const [rollNumberError, setRollNumberError] = useState(false);
   // const [studentNameError, setStudentNameError] = useState(false);
+  // const navigate = useNavigate()
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -62,6 +63,9 @@ const LoginPage = ({ role }) => {
       const fields = { email, password };
       setLoader(true);
       dispatch(loginUser(fields, role));
+      console.log("student login successful", role)
+      // navigate('/')
+      // console.log("navigated home page")
     } else {
       const email = event.target.email.value;
       const password = event.target.password.value;
@@ -109,11 +113,21 @@ const LoginPage = ({ role }) => {
   };
 
   useEffect(() => {
+    console.log("Redux State:");
+    console.log("Login Status:", status);
+    console.log("Current User:", currentUser);
+    console.log("Current Role:", currentRole);
+    console.log("Login Error:", error);
     if (status === "success" || currentUser !== null) {
+      console.log("Redirection triggered");
+      console.log("Current role: ", currentRole);
       if (currentRole === "Admin") {
         navigate("/Admin/dashboard");
       } else if (currentRole === "Student") {
+        console.log("Navigating to", currentRole);
         navigate("/Student/dashboard");
+        console.log("navigated to student dashboard")
+        // console.log("response", response)
       } else if (currentRole === "Teacher") {
         navigate("/Teacher/dashboard");
       }
@@ -126,6 +140,7 @@ const LoginPage = ({ role }) => {
       setShowPopup(true);
       setLoader(false);
       setGuestLoader(false);
+      console.log("navigation unsccessful ")
     }
   }, [status, currentRole, navigate, error, response, currentUser]);
 
@@ -230,8 +245,10 @@ const LoginPage = ({ role }) => {
                   control={<Checkbox value="remember" color="primary" />}
                   label="Remember me"
                 />
-                <StyledLink href="#">Forgot password?</StyledLink>
+                {/* Link to the Forgot Password Page */}
+                <StyledLink to="/forgot-password">Forgot password?</StyledLink>
               </Grid>
+
               <LightPurpleButton
                 type="submit"
                 fullWidth

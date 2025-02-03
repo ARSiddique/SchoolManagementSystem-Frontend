@@ -42,8 +42,10 @@ const userSlice = createSlice({
             state.response = action.payload;
         },
         authError: (state, action) => {
+            // state.status = 'error';
+            // state.error = action.payload;
             state.status = 'error';
-            state.error = action.payload;
+            state.error = action.payload?.message || "Something went wrong";
         },
         authLogout: (state) => {
             localStorage.removeItem('user');
@@ -74,12 +76,45 @@ const userSlice = createSlice({
             state.error = null;
         },
         getError: (state, action) => {
+            // state.loading = false;
+            // state.error = action.payload;
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload?.message || "Network Error";
         },
         toggleDarkMode: (state) => {
             state.darkMode = !state.darkMode;
+        },
+        forgotPasswordRequest: (state) => {
+            state.loading = true;
+            state.response = null;
+            state.error = null;
+        },
+        forgotPasswordSuccess: (state, action) => {
+            state.loading = false;
+            state.response = action.payload;
+            state.error = null;
+        },
+        forgotPasswordError: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.response = null;
+        },
+        resetPasswordRequest: (state) => {
+            state.loading = true;
+            state.response = null;
+            state.error = null;
+        },
+        resetPasswordSuccess: (state, action) => {
+            state.loading = false;
+            state.response = action.payload;
+            state.error = null;
+        },
+        resetPasswordError: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.response = null;
         }
+
     },
 });
 
@@ -96,7 +131,13 @@ export const {
     getRequest,
     getFailed,
     getError,
-    toggleDarkMode
+    toggleDarkMode,
+    forgotPasswordRequest,
+    forgotPasswordSuccess,
+    forgotPasswordError,
+    resetPasswordRequest,
+    resetPasswordSuccess,
+    resetPasswordError
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

@@ -45,7 +45,6 @@ export const updateStudentFields =
       dispatch(getError(error));
     }
   };
-
 export const removeStuff = (id, address) => async (dispatch) => {
   dispatch(getRequest());
 

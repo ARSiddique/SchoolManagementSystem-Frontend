@@ -32,9 +32,17 @@ const AddStudent = ({ situation }) => {
     recoveryDate: "",
     paymentMethod: "",
     studentImage: null,
+    paymentId: "",
+    csrName: "",
+    admissionOfficer: "",
+    branch: "",
+    password: "",
+    sclassName: "",
+    enrollmentDate: "",
   });
 
   const [file, setFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [message, setMessage] = useState("");
   const [loader, setLoader] = useState(false);
@@ -43,7 +51,6 @@ const AddStudent = ({ situation }) => {
   const role = "Student";
   const attendance = [];
 
-  // Ensure Sclass is initialized to match param or set other context
   const sclassNameParam = situation === "Class" ? params.id : "";
 
   useEffect(() => {
@@ -62,7 +69,19 @@ const AddStudent = ({ situation }) => {
   };
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    const file = e.target.files[0];
+    setFile(file);
+    setFormData({ ...formData, studentImage: file });
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+    }
   };
 
   const changeHandler = (event) => {
@@ -87,7 +106,6 @@ const AddStudent = ({ situation }) => {
       setShowPopup(true);
     } else {
       setLoader(true);
-      // Add remaining fields to formData based on your form structure
       dispatch(registerUser({ ...formData, adminID, role, attendance }, role));
     }
   };
@@ -143,13 +161,13 @@ const AddStudent = ({ situation }) => {
         style={{
           padding: "40px",
           display: "flex",
-          flexDirection: "column",  // To align the elements vertically
-          justifyContent: "flex-start", // Ensures content is aligned at the top
+          flexDirection: "column",
+          justifyContent: "flex-start",
           maxHeight: "80vh",
-          overflowY: "auto",  // Allows scrolling if content overflows
-          gap: "20px",  // Adds space between elements to prevent overlap
+          overflowY: "auto",
+          gap: "20px",
           width: "100%",
-          alignItems: "flex-start", // Ensures left alignment of form fields
+          alignItems: "flex-start",
         }}
       >
         <form
@@ -175,6 +193,29 @@ const AddStudent = ({ situation }) => {
             Add Student
           </h2>
 
+          {/* Institutes Input */}
+          <div>
+            <label>Institute</label>
+            <input
+              className="registerInput"
+              type="text"
+              name="institutes"
+              placeholder="Enter institute"
+              value={formData.institutes}
+              onChange={handleChange}
+              required
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginTop: "8px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+
+          {/* Student Name Input */}
           <div>
             <label>Name</label>
             <input
@@ -196,34 +237,49 @@ const AddStudent = ({ situation }) => {
             />
           </div>
 
-          {situation === "Student" && (
-            <div>
-              <label>Class</label>
-              <select
-                className="registerInput"
-                name="className"
-                value={formData.className}
-                onChange={changeHandler}
-                required
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginTop: "8px",
-                  fontSize: "16px",
-                  border: "1px solid #ccc",
-                  borderRadius: "5px",
-                }}
-              >
-                <option value="Select Class">Select Class</option>
-                {sclassesList.map((classItem, index) => (
-                  <option key={index} value={classItem.sclassName}>
-                    {classItem.sclassName}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+          {/* Course Name Input */}
+          <div>
+            <label>Course</label>
+            <input
+              className="registerInput"
+              type="text"
+              name="courseName"
+              placeholder="Enter course name"
+              value={formData.courseName}
+              onChange={handleChange}
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginTop: "8px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
 
+          {/* Batch Number Input */}
+          <div>
+            <label>Batch No</label>
+            <input
+              className="registerInput"
+              type="text"
+              name="batchNo"
+              placeholder="Enter batch number"
+              value={formData.batchNo}
+              onChange={handleChange}
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginTop: "8px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+
+          {/* Email Input */}
           <div>
             <label>Email</label>
             <input
@@ -245,27 +301,7 @@ const AddStudent = ({ situation }) => {
             />
           </div>
 
-          <div>
-            <label>Password</label>
-            <input
-              className="registerInput"
-              type="password"
-              name="password"
-              placeholder="Enter student's password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "10px",
-                marginTop: "8px",
-                fontSize: "16px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-              }}
-            />
-          </div>
-
+          {/* Address Input */}
           <div>
             <label>Address</label>
             <input
@@ -286,6 +322,7 @@ const AddStudent = ({ situation }) => {
             />
           </div>
 
+          {/* CNIC Input */}
           <div>
             <label>CNIC</label>
             <input
@@ -306,6 +343,7 @@ const AddStudent = ({ situation }) => {
             />
           </div>
 
+          {/* Total Fee Input */}
           <div>
             <label>Total Fee</label>
             <input
@@ -326,6 +364,7 @@ const AddStudent = ({ situation }) => {
             />
           </div>
 
+          {/* Fee Received Input */}
           <div>
             <label>Fee Received</label>
             <input
@@ -346,6 +385,7 @@ const AddStudent = ({ situation }) => {
             />
           </div>
 
+          {/* Pending Fee Input */}
           <div>
             <label>Pending Fee</label>
             <input
@@ -366,6 +406,7 @@ const AddStudent = ({ situation }) => {
             />
           </div>
 
+          {/* Recovery Date Input */}
           <div>
             <label>Recovery Date</label>
             <input
@@ -384,12 +425,34 @@ const AddStudent = ({ situation }) => {
               }}
             />
           </div>
+          {/* Enrollment Date Input */}
+          <div>
+            <label>Enrollment Date</label>
+            <input
+              className="registerInput"
+              type="date"
+              name="enrollmentDate"
+              value={formData.enrollmentDate}
+              onChange={handleChange}
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginTop: "8px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
 
+          {/* Payment Method Input */}
           <div>
             <label>Payment Method</label>
-            <select
+            <input
               className="registerInput"
+              type="text"
               name="paymentMethod"
+              placeholder="Enter payment method"
               value={formData.paymentMethod}
               onChange={handleChange}
               style={{
@@ -400,56 +463,197 @@ const AddStudent = ({ situation }) => {
                 border: "1px solid #ccc",
                 borderRadius: "5px",
               }}
-            >
-              <option value="">Select Payment Method</option>
-              <option value="Cash">Cash</option>
-              <option value="Credit Card">Credit Card</option>
-              <option value="Online">Online</option>
-            </select>
+            />
           </div>
 
+          {/* Payment ID Input */}
           <div>
-            <label>Student Image</label>
+            <label>Payment ID</label>
             <input
-              type="file"
-              name="studentImage"
-              onChange={(e) =>
-                setFormData({ ...formData, studentImage: e.target.files[0] })
-              }
               className="registerInput"
+              type="text"
+              name="paymentId"
+              placeholder="Enter payment ID"
+              value={formData.paymentId}
+              onChange={handleChange}
               style={{
                 width: "100%",
                 padding: "10px",
                 marginTop: "8px",
+                fontSize: "16px",
                 border: "1px solid #ccc",
                 borderRadius: "5px",
               }}
             />
           </div>
 
-          <button
-            className="registerButton"
-            type="submit"
-            style={{
-              padding: "12px",
-              backgroundColor: "#4caf50",
-              color: "#fff",
-              cursor: "pointer",
-              border: "none",
-              borderRadius: "5px",
-              width: "100%",
-              marginTop: "20px",
-            }}
-            disabled={loader}
-          >
-            {loader ? <CircularProgress size={24} color="inherit" /> : "Add Student"}
-          </button>
+          {/* CSR Name Input */}
+          <div>
+            <label>CSR Name</label>
+            <input
+              className="registerInput"
+              type="text"
+              name="csrName"
+              placeholder="Enter CSR name"
+              value={formData.csrName}
+              onChange={handleChange}
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginTop: "8px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+
+          {/* Admission Officer Input */}
+          <div>
+            <label>Admission Officer</label>
+            <input
+              className="registerInput"
+              type="text"
+              name="admissionOfficer"
+              placeholder="Enter admission officer name"
+              value={formData.admissionOfficer}
+              onChange={handleChange}
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginTop: "8px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+
+          {/* Branch Input */}
+          <div>
+            <label>Branch</label>
+            <input
+              className="registerInput"
+              type="text"
+              name="branch"
+              placeholder="Enter branch name"
+              value={formData.branch}
+              onChange={handleChange}
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginTop: "8px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+
+          {/* Password Input */}
+          <div>
+            <label>Password</label>
+            <input
+              className="registerInput"
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginTop: "8px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+
+          {/* Class Selection Dropdown */}
+          <div>
+            <label>Select Class</label>
+            <select
+              className="registerInput"
+              value={formData.sclassName}
+              onChange={changeHandler}
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginTop: "8px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            >
+              <option value="">Select Class</option>
+              {sclassesList?.map((sclass) => (
+                <option key={sclass._id} value={sclass.sclassName}>
+                  {sclass.sclassName}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Image Upload */}
+          <div>
+            <label>Upload Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginTop: "8px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                style={{
+                  maxWidth: "150px",
+                  marginTop: "10px",
+                  borderRadius: "10px",
+                }}
+              />
+            )}
+          </div>
+
+          {/* Submit Button */}
+          <div style={{ marginTop: "20px" }}>
+            <button
+              type="submit"
+              className="registerButton"
+              disabled={loader}
+              style={{
+                padding: "10px 20px",
+                fontSize: "16px",
+                borderRadius: "5px",
+                backgroundColor: "#4CAF50",
+                color: "#fff",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              {loader ? (
+                <CircularProgress size={24} style={{ color: "#fff" }} />
+              ) : (
+                "Add Student"
+              )}
+            </button>
+          </div>
         </form>
       </div>
 
       <h1 style={{ textAlign: "center", marginTop: "30px" }}>Or</h1>
 
-      {/* File Upload Section */}
       <div
         style={{
           padding: "40px",

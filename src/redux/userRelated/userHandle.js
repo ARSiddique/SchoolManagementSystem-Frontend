@@ -11,6 +11,12 @@ import {
   getRequest,
   getFailed,
   getError,
+  forgotPasswordRequest,
+  forgotPasswordSuccess,
+  forgotPasswordError,
+  resetPasswordRequest,
+  resetPasswordSuccess,
+  resetPasswordError
 } from "./userSlice";
 const REACT_APP_BASE_URL = "http://localhost:5000";
 // const REACT_APP_BASE_URL = "https://lms-backend-mt7r.onrender.com";
@@ -26,16 +32,20 @@ export const loginUser = (fields, role) => async (dispatch) => {
         headers: { "Content-Type": "application/json" },
       }
     );
+    console.log("Login API Response:", result.data);
     if (result.data.role) {
       dispatch(authSuccess(result.data));
+      console.log("Login API Response:", result.data);
     } else {
       dispatch(authFailed(result.data.message));
+      console.log("Login failed:", result.data.message);
     }
   } catch (error) {
-    dispatch(authError(error));
+    // dispatch(authError(error));
+    console.log("Login error:", error.response?.data?.message || error.message);
+    dispatch(authError(error.response?.data?.message || error.message || "Login failed"));
   }
 };
-
 export const registerUser = (fields, role) => async (dispatch) => {
   dispatch(authRequest());
 
@@ -47,6 +57,7 @@ export const registerUser = (fields, role) => async (dispatch) => {
         headers: { "Content-Type": "application/json" },
       }
     );
+    console.log("result", result)
     if (result.data.schoolName) {
       dispatch(authSuccess(result.data));
     } else if (result.data.school) {
@@ -58,11 +69,9 @@ export const registerUser = (fields, role) => async (dispatch) => {
     dispatch(authError(error));
   }
 };
-
 export const logoutUser = () => (dispatch) => {
   dispatch(authLogout());
 };
-
 export const getUserDetails = (id, address) => async (dispatch) => {
   dispatch(getRequest());
 
@@ -75,7 +84,6 @@ export const getUserDetails = (id, address) => async (dispatch) => {
     dispatch(getError(error));
   }
 };
-
 export const deleteUser = (id, address) => async (dispatch) => {
   dispatch(getRequest());
 
@@ -90,12 +98,10 @@ export const deleteUser = (id, address) => async (dispatch) => {
     dispatch(getError(error));
   }
 };
-
 // export const deleteUser = (id, address) => async (dispatch) => {
 //   dispatch(getRequest());
 //   dispatch(getFailed("Sorry the delete function has been disabled for now."));
 // };
-
 export const updateUser = (fields, id, address) => async (dispatch) => {
   dispatch(getRequest());
 
@@ -116,7 +122,6 @@ export const updateUser = (fields, id, address) => async (dispatch) => {
     dispatch(getError(error));
   }
 };
-
 export const addStuff = (fields, address) => async (dispatch) => {
   dispatch(authRequest());
 
@@ -138,3 +143,22 @@ export const addStuff = (fields, address) => async (dispatch) => {
     dispatch(authError(error));
   }
 };
+export const forgotPassword = (email) => async (dispatch) => {
+  dispatch(forgotPasswordRequest());
+  try {
+    const result = await axios.post(`${REACT_APP_BASE_URL}/forget-password`, { email });
+    dispatch(forgotPasswordSuccess(result.data.message));
+  } catch (error) {
+    dispatch(forgotPasswordError(error.response?.data?.message || "Network Error"));
+  }
+};
+export const resetPassword = (token, password) => async (dispatch) => {
+  dispatch(resetPasswordRequest());
+  try {
+    const result = await axios.post(`${REACT_APP_BASE_URL}/reset-password/${token}`, { password });
+    dispatch(resetPasswordSuccess(result.data.message));
+  } catch (error) {
+    dispatch(resetPasswordError(error.response?.data?.message || "Network Error"));
+  }
+};
+

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Async thunk to upload file
 export const uploadFile = createAsyncThunk(
     "upload/uploadFile",
     async (formData, { rejectWithValue }) => {
@@ -23,15 +22,9 @@ export const uploadFile = createAsyncThunk(
     }
 );
 
-const initialState = {
-    status: "idle",
-    message: "",
-    error: null,
-};
-
 const uploadSlice = createSlice({
     name: "upload",
-    initialState,
+    initialState: { status: "idle", message: "", error: null },
     reducers: {
         clearUploadState: (state) => {
             state.status = "idle";

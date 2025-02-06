@@ -68,10 +68,10 @@ const TeacherViewStudent = () => {
                 </>
                 :
                 <div>
-                    Name: {userDetails.name}
+                    Name: {userDetails?.studentName}
                     <br />
-                    Roll Number: {userDetails.rollNum}
-                    <br />
+                    {/* Roll Number: {userDetails.rollNum}
+                    <br /> */}
                     Class: {sclassName.sclassName}
                     <br />
                     School: {studentSchool.schoolName}

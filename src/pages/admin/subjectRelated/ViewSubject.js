@@ -43,14 +43,14 @@ const ViewSubject = () => {
   };
 
   const studentColumns = [
-    { id: 'rollNum', label: 'Roll No.', minWidth: 100 },
+    // { id: 'rollNum', label: 'Roll No.', minWidth: 100 },
     { id: 'name', label: 'Name', minWidth: 170 },
   ]
 
   const studentRows = sclassStudents.map((student) => {
     return {
-      rollNum: student.rollNum,
-      name: student.name,
+      // rollNum: student.rollNum,
+      name: student?.studentName,
       id: student._id,
     };
   })

@@ -8,7 +8,7 @@ import TableTemplate from '../../../components/TableTemplate';
 
 const SeeComplains = () => {
 
-  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };  const dispatch = useDispatch();
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } }; const dispatch = useDispatch();
   const { complainsList, loading, error, response } = useSelector((state) => state.complain);
   const { currentUser } = useSelector(state => state.user)
 
@@ -25,18 +25,31 @@ const SeeComplains = () => {
     { id: 'complaint', label: 'Complaint', minWidth: 100 },
     { id: 'date', label: 'Date', minWidth: 170 },
   ];
+  console.log("Complains List:", complainsList);
+  // const complainRows = complainsList && complainsList.length > 0 && complainsList.map((complain) => {
+  //   const date = new Date(complain.date);
+  //   const dateString = date.toString() !== "Invalid Date" ? date.toISOString().substring(0, 10) : "Invalid Date";
+  //   return {
+  //     user: complain?.user?.name || "Unknown User",
+  //     complaint: complain.complaint,
+  //     date: dateString,
+  //     id: complain._id,
+  //   };
+  // });
 
   const complainRows = complainsList && complainsList.length > 0 && complainsList.map((complain) => {
+    console.log("Complain object:", complain); // Debugging
+
     const date = new Date(complain.date);
     const dateString = date.toString() !== "Invalid Date" ? date.toISOString().substring(0, 10) : "Invalid Date";
+
     return {
-      user: complain.user.name,
-      complaint: complain.complaint,
+      user: complain.user && complain.user.name ? complain.user.name : "Unknown User",
+      complaint: complain.complaint || "No complaint",
       date: dateString,
       id: complain._id,
     };
   });
-
   const ComplainButtonHaver = ({ row }) => {
     return (
       <>

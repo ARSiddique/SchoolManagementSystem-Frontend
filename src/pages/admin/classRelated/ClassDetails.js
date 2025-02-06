@@ -24,6 +24,8 @@ const ClassDetails = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const { subjectsList, sclassStudents, sclassDetails, loading, error, response, getresponse } = useSelector((state) => state.sclass);
+    // console.log("sclassStudents from Redux:", sclassStudents);
+    // console.log(sclassStudents);
 
     const classID = params.id
 
@@ -51,12 +53,6 @@ const ClassDetails = () => {
         console.log(address);
         setMessage("Sorry the delete function has been disabled for now.")
         setShowPopup(true)
-        // dispatch(deleteUser(deleteID, address))
-        //     .then(() => {
-        //         dispatch(getClassStudents(classID));
-        //         dispatch(resetSubjects())
-        //         dispatch(getSubjectList(classID, "ClassSubjects"))
-        //     })
     }
 
     const subjectColumns = [
@@ -65,12 +61,14 @@ const ClassDetails = () => {
     ]
 
     const subjectRows = subjectsList && subjectsList.length > 0 && subjectsList.map((subject) => {
+        // console.log("Mapping student:", student);
         return {
             name: subject.subName,
             code: subject.subCode,
             id: subject._id,
         };
     })
+    // console.log("Rows passed to TableTemplate:", studentRows);
 
     const SubjectsButtonHaver = ({ row }) => {
         return (
@@ -129,13 +127,13 @@ const ClassDetails = () => {
 
     const studentColumns = [
         { id: 'name', label: 'Name', minWidth: 170 },
-        { id: 'rollNum', label: 'Roll Number', minWidth: 100 },
+        { id: 'cnic', label: 'CNIC', minWidth: 100 },
     ]
-
+    // console.log("Student Data:", sclassStudents);
     const studentRows = sclassStudents.map((student) => {
         return {
-            name: student.name,
-            rollNum: student.rollNum,
+            name: student?.studentName || student?.csrName || "N/A",
+            CNIC: student?.CNIC || "N/A",
             id: student._id,
         };
     })
@@ -203,13 +201,13 @@ const ClassDetails = () => {
         )
     }
 
-    const ClassTeachersSection = () => {
-        return (
-            <>
-                Teachers
-            </>
-        )
-    }
+    // const ClassTeachersSection = () => {
+    //     return (
+    //         <>
+    //             Teachers
+    //         </>
+    //     )
+    // }
 
     const ClassDetailsSection = () => {
         const numberOfSubjects = subjectsList.length;
@@ -262,7 +260,7 @@ const ClassDetails = () => {
                                     <Tab label="Details" value="1" />
                                     <Tab label="Subjects" value="2" />
                                     <Tab label="Students" value="3" />
-                                    <Tab label="Teachers" value="4" />
+                                    {/* <Tab label="Teachers" value="4" /> */}
                                 </TabList>
                             </Box>
                             <Container sx={{ marginTop: "3rem", marginBottom: "4rem" }}>
@@ -275,9 +273,9 @@ const ClassDetails = () => {
                                 <TabPanel value="3">
                                     <ClassStudentsSection />
                                 </TabPanel>
-                                <TabPanel value="4">
+                                {/* <TabPanel value="4">
                                     <ClassTeachersSection />
-                                </TabPanel>
+                                </TabPanel> */}
                             </Container>
                         </TabContext>
                     </Box>

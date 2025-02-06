@@ -19,8 +19,7 @@ import {
   resetPasswordError
 } from "./userSlice";
 const REACT_APP_BASE_URL = "http://localhost:5000";
-// const REACT_APP_BASE_URL = "https://lms-backend-mt7r.onrender.com";
-
+// const REACT_APP_BASE_URL = "https://lms-backend-mt7r.onrender.com"
 export const loginUser = (fields, role) => async (dispatch) => {
   dispatch(authRequest());
 
@@ -46,18 +45,60 @@ export const loginUser = (fields, role) => async (dispatch) => {
     dispatch(authError(error.response?.data?.message || error.message || "Login failed"));
   }
 };
+// export const registerUser = (fields, role) => async (dispatch) => {
+//   dispatch(authRequest());
+
+//   try {
+//     const result = await axios.post(
+//       `${REACT_APP_BASE_URL}/${role}Reg`,
+//       fields,
+//       {
+//         headers: { "Content-Type": "application/json" },
+//       }
+//     );
+//     console.log("result", result)
+//     if (result.data.schoolName) {
+//       dispatch(authSuccess(result.data));
+//     } else if (result.data.school) {
+//       dispatch(stuffAdded());
+//     } else {
+//       dispatch(authFailed(result.data.message));
+//     }
+//   } catch (error) {
+//     dispatch(authError(error));
+//   }
+// };
+
 export const registerUser = (fields, role) => async (dispatch) => {
   dispatch(authRequest());
 
   try {
+    let formData;
+    let headers = {
+      "Content-Type": "application/json", // Default content type
+    };
+
+    // Check if fields contain a file (for multipart/form-data)
+    const hasFile = Object.values(fields).some((value) => value instanceof File);
+
+    if (hasFile) {
+      formData = new FormData();
+      for (const key in fields) {
+        formData.append(key, fields[key]);
+      }
+      headers = { "Content-Type": "multipart/form-data" };
+    } else {
+      formData = fields; // Send as JSON
+    }
+
     const result = await axios.post(
       `${REACT_APP_BASE_URL}/${role}Reg`,
-      fields,
-      {
-        headers: { "Content-Type": "application/json" },
-      }
+      formData,
+      { headers }
     );
-    console.log("result", result)
+
+    console.log("result", result);
+
     if (result.data.schoolName) {
       dispatch(authSuccess(result.data));
     } else if (result.data.school) {
@@ -79,6 +120,7 @@ export const getUserDetails = (id, address) => async (dispatch) => {
     const result = await axios.get(`${REACT_APP_BASE_URL}/${address}/${id}`);
     if (result.data) {
       dispatch(doneSuccess(result.data));
+      
     }
   } catch (error) {
     dispatch(getError(error));
@@ -161,4 +203,3 @@ export const resetPassword = (token, password) => async (dispatch) => {
     dispatch(resetPasswordError(error.response?.data?.message || "Network Error"));
   }
 };
-

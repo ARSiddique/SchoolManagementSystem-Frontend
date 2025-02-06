@@ -27,11 +27,16 @@ const ViewStudent = () => {
     const params = useParams()
     const dispatch = useDispatch()
     const { userDetails, response, loading, error } = useSelector((state) => state.user);
+    // console.log("Redux userDetails:", userDetails);
 
     const studentID = params.id
     const address = "Student"
+    // console.log("Redux userDetails:", userDetails);
+    // console.log("Student Name:", userDetails?.name);  // Check if 'name' exists
+    // console.log("User Object Keys:", Object.keys(userDetails || {}));
 
     useEffect(() => {
+        // console.log("User Details from Redux:", userDetails);
         dispatch(getUserDetails(studentID, address));
     }, [dispatch, studentID])
 
@@ -45,7 +50,7 @@ const ViewStudent = () => {
     else if (error) { console.log(error) }
 
     const [name, setName] = useState('');
-    const [rollNum, setRollNum] = useState('');
+    // const [rollNum, setRollNum] = useState('');
     const [password, setPassword] = useState('');
     const [sclassName, setSclassName] = useState('');
     const [studentSchool, setStudentSchool] = useState('');
@@ -76,13 +81,21 @@ const ViewStudent = () => {
     };
 
     const fields = password === ""
-        ? { name, rollNum }
-        : { name, rollNum, password }
+        ? {
+            name
+            // , rollNum
+        }
+        : {
+            name,
+            // rollNum,
+            password
+        }
 
     useEffect(() => {
+        // console.log("User Details from Redux:", userDetails);
         if (userDetails) {
-            setName(userDetails.name || '');
-            setRollNum(userDetails.rollNum || '');
+            setName(userDetails.studentName || '');
+            // setRollNum(userDetails.rollNum || '');
             setSclassName(userDetails.sclassName || '');
             setStudentSchool(userDetails.school || '');
             setSubjectMarks(userDetails.examResult || '');
@@ -340,12 +353,14 @@ const ViewStudent = () => {
     }
 
     const StudentDetailsSection = () => {
+        // console.log("Rendering student name:", userDetails?.name);
         return (
             <div>
-                Name: {userDetails.name}
+
+                Name: {userDetails?.studentName}
                 <br />
-                Roll Number: {userDetails.rollNum}
-                <br />
+                {/* Roll Number: {userDetails.rollNum}
+                <br /> */}
                 Class: {sclassName.sclassName}
                 <br />
                 School: {studentSchool.schoolName}

@@ -28,10 +28,11 @@ const AdminHomePage = () => {
         dispatch(getAllTeachers(adminID));
     }, [adminID, dispatch]);
 
-    const numberOfStudents = studentsList && studentsList.length;
-    const numberOfClasses = sclassesList && sclassesList.length;
-    const numberOfTeachers = teachersList && teachersList.length;
-
+    const numberOfStudents = studentsList?.length || 0;
+    const numberOfClasses = sclassesList?.length || 0;
+    const numberOfTeachers = teachersList?.length || 0;
+    // Calculate total fees received
+    const totalFeesCollected = studentsList?.reduce((total, student) => total + (student.feeRecieved || 0), 0) || 0;
     return (
         <>
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -69,7 +70,7 @@ const AdminHomePage = () => {
                             <Title>
                                 Fees Collection
                             </Title>
-                            <Data start={0} end={23000} duration={2.5} prefix="$" />                        </StyledPaper>
+                            <Data start={0} end={totalFeesCollected} duration={2.5} prefix="Rs " />                        </StyledPaper>
                     </Grid>
                     <Grid item xs={12} md={12} lg={12}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>

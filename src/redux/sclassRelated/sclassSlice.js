@@ -30,11 +30,13 @@ const sclassSlice = createSlice({
             state.getresponse = null;
         },
         getStudentsSuccess: (state, action) => {
+            // console.log("Redux received students:", action.payload);  // Log received data
             state.sclassStudents = action.payload;
             state.loading = false;
             state.error = null;
             state.getresponse = null;
         },
+
         getSubjectsSuccess: (state, action) => {
             state.subjectsList = action.payload;
             state.loading = false;

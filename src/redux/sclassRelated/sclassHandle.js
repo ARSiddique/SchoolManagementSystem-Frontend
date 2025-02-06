@@ -38,6 +38,7 @@ export const getClassStudents = (id) => async (dispatch) => {
     const result = await axios.get(
       `${REACT_APP_BASE_URL}/Sclass/Students/${id}`
     );
+    // console.log(result.data)
     if (result.data.message) {
       dispatch(getFailedTwo(result.data.message));
     } else {

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Grid, Paper, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
-import { calculateOverallAttendancePercentage } from '../../components/attendanceCalculator';
 import CustomPieChart from '../../components/CustomPieChart';
 import { getUserDetails } from '../../redux/userRelated/userHandle';
 import styled from 'styled-components';
@@ -17,7 +16,7 @@ const StudentHomePage = () => {
     const { userDetails, currentUser, loading, response } = useSelector((state) => state.user);
     const { subjectsList } = useSelector((state) => state.sclass);
 
-    const [subjectAttendance, setSubjectAttendance] = useState([]);
+    // const [subjectAttendance, setSubjectAttendance] = useState([]);
 
     const classID = currentUser.sclassName._id
 
@@ -28,19 +27,19 @@ const StudentHomePage = () => {
 
     const numberOfSubjects = subjectsList && subjectsList.length;
 
-    useEffect(() => {
-        if (userDetails) {
-            setSubjectAttendance(userDetails.attendance || []);
-        }
-    }, [userDetails])
+    // useEffect(() => {
+    //     if (userDetails) {
+    //         setSubjectAttendance(userDetails.attendance || []);
+    //     }
+    // }, [userDetails])
 
-    const overallAttendancePercentage = calculateOverallAttendancePercentage(subjectAttendance);
-    const overallAbsentPercentage = 100 - overallAttendancePercentage;
+    // const overallAttendancePercentage = calculateOverallAttendancePercentage(subjectAttendance);
+    // const overallAbsentPercentage = 100 - overallAttendancePercentage;
 
-    const chartData = [
-        { name: 'Present', value: overallAttendancePercentage },
-        { name: 'Absent', value: overallAbsentPercentage }
-    ];
+    // const chartData = [
+    //     { name: 'Present', value: overallAttendancePercentage },
+    //     { name: 'Absent', value: overallAbsentPercentage }
+    // ];
     return (
         <>
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -53,43 +52,6 @@ const StudentHomePage = () => {
                             </Title>
                             <Data start={0} end={numberOfSubjects} duration={2.5} />
                         </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Assignment} alt="Assignments" />
-                            <Title>
-                                Total Assignments
-                            </Title>
-                            <Data start={0} end={15} duration={4} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={4} lg={3}>
-                        <ChartContainer>
-                            {
-                                response ?
-                                    <Typography variant="h6">No Attendance Found</Typography>
-                                    :
-                                    <>
-                                        {loading
-                                            ? (
-                                                <Typography variant="h6">Loading...</Typography>
-                                            )
-                                            :
-                                            <>
-                                                {
-                                                    subjectAttendance && Array.isArray(subjectAttendance) && subjectAttendance.length > 0 ? (
-                                                        <>
-                                                            <CustomPieChart data={chartData} />
-                                                        </>
-                                                    )
-                                                        :
-                                                        <Typography variant="h6">No Attendance Found</Typography>
-                                                }
-                                            </>
-                                        }
-                                    </>
-                            }
-                        </ChartContainer>
                     </Grid>
                     <Grid item xs={12}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>

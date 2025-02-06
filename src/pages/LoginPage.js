@@ -237,18 +237,6 @@ const LoginPage = ({ role }) => {
                   ),
                 }}
               />
-              <Grid
-                container
-                sx={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
-                {/* Link to the Forgot Password Page */}
-                <StyledLink to="/forgot-password">Forgot password?</StyledLink>
-              </Grid>
-
               <LightPurpleButton
                 type="submit"
                 fullWidth
@@ -261,14 +249,6 @@ const LoginPage = ({ role }) => {
                   "Login"
                 )}
               </LightPurpleButton>
-              <Button
-                fullWidth
-                onClick={guestModeHandler}
-                variant="outlined"
-                sx={{ mt: 2, mb: 3, color: "#7f56da", borderColor: "#7f56da" }}
-              >
-                Login as Guest
-              </Button>
               {role === "Admin" && (
                 <Grid container>
                   <Grid>Don't have an account?</Grid>

@@ -68,13 +68,12 @@ const ShowStudents = () => {
     studentsList &&
     studentsList.length > 0 &&
     studentsList.map((student) => {
-      // console.log(student.studentImage); // Log to check the image URL
       return {
         studentImage: student?.studentImage ? (
           <img src={student.studentImage} alt="Student" width="50" height="50" />
 
         ) : (
-          <span>No Image</span> // Show text if no image is available
+          <span>No Image</span>
         ),
         studentName: student?.studentName,
         email: student?.email,
@@ -98,27 +97,9 @@ const ShowStudents = () => {
     });
 
   const StudentButtonHaver = ({ row }) => {
-    const options = ["Take Attendance", "Provide Marks"];
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
     const [selectedIndex, setSelectedIndex] = React.useState(0);
-
-    const handleClick = () => {
-      if (selectedIndex === 0) {
-        handleAttendance();
-      } else if (selectedIndex === 1) {
-        handleMarks();
-      }
-    };
-
-    const handleAttendance = () => {
-      navigate("/Admin/students/student/attendance/" + row.id);
-    };
-
-    const handleMarks = () => {
-      navigate("/Admin/students/student/marks/" + row.id);
-    };
-
     const handleMenuItemClick = (event, index) => {
       setSelectedIndex(index);
       setOpen(false);
@@ -146,57 +127,6 @@ const ShowStudents = () => {
         >
           View
         </BlueButton>
-        <React.Fragment>
-          <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
-            <Button onClick={handleClick}>{options[selectedIndex]}</Button>
-            <BlackButton
-              size="small"
-              aria-controls={open ? "split-button-menu" : undefined}
-              aria-expanded={open ? "true" : undefined}
-              aria-label="select merge strategy"
-              aria-haspopup="menu"
-              onClick={handleToggle}
-            >
-              {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-            </BlackButton>
-          </ButtonGroup>
-          <Popper
-            sx={{
-              zIndex: 1,
-            }}
-            open={open}
-            anchorEl={anchorRef.current}
-            role={undefined}
-            transition
-            disablePortal
-          >
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                style={{
-                  transformOrigin:
-                    placement === "bottom" ? "center top" : "center bottom",
-                }}
-              >
-                <Paper>
-                  <ClickAwayListener onClickAway={handleClose}>
-                    <MenuList id="split-button-menu" autoFocusItem>
-                      {options.map((option, index) => (
-                        <MenuItem
-                          key={option}
-                          selected={index === selectedIndex}
-                          onClick={(event) => handleMenuItemClick(event, index)}
-                        >
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Popper>
-        </React.Fragment>
       </>
     );
   };

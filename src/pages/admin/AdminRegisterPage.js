@@ -161,12 +161,12 @@ const AdminRegisterPage = () => {
                                     ),
                                 }}
                             />
-                            <Grid container sx={{ display: "flex", justifyContent: "space-between" }}>
+                            {/* <Grid container sx={{ display: "flex", justifyContent: "space-between" }}>
                                 <FormControlLabel
                                     control={<Checkbox value="remember" color="primary" />}
                                     label="Remember me"
                                 />
-                            </Grid>
+                            </Grid> */}
                             <LightPurpleButton
                                 type="submit"
                                 fullWidth

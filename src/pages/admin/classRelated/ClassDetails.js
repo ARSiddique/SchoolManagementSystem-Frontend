@@ -127,13 +127,13 @@ const ClassDetails = () => {
 
     const studentColumns = [
         { id: 'name', label: 'Name', minWidth: 170 },
-        { id: 'cnic', label: 'CNIC', minWidth: 100 },
+        // { id: 'cnic', label: 'CNIC', minWidth: 100 },
     ]
     // console.log("Student Data:", sclassStudents);
     const studentRows = sclassStudents.map((student) => {
         return {
             name: student?.studentName || student?.csrName || "N/A",
-            CNIC: student?.CNIC || "N/A",
+            // CNIC: student?.CNIC || "N/A",
             id: student._id,
         };
     })
@@ -201,13 +201,13 @@ const ClassDetails = () => {
         )
     }
 
-    // const ClassTeachersSection = () => {
-    //     return (
-    //         <>
-    //             Teachers
-    //         </>
-    //     )
-    // }
+    const ClassTeachersSection = () => {
+        return (
+            <>
+                Teachers
+            </>
+        )
+    }
 
     const ClassDetailsSection = () => {
         const numberOfSubjects = subjectsList.length;
@@ -260,7 +260,7 @@ const ClassDetails = () => {
                                     <Tab label="Details" value="1" />
                                     <Tab label="Subjects" value="2" />
                                     <Tab label="Students" value="3" />
-                                    {/* <Tab label="Teachers" value="4" /> */}
+                                    <Tab label="Teachers" value="4" />
                                 </TabList>
                             </Box>
                             <Container sx={{ marginTop: "3rem", marginBottom: "4rem" }}>
@@ -273,9 +273,9 @@ const ClassDetails = () => {
                                 <TabPanel value="3">
                                     <ClassStudentsSection />
                                 </TabPanel>
-                                {/* <TabPanel value="4">
+                                <TabPanel value="4">
                                     <ClassTeachersSection />
-                                </TabPanel> */}
+                                </TabPanel>
                             </Container>
                         </TabContext>
                     </Box>

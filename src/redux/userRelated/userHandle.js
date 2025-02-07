@@ -19,7 +19,6 @@ import {
   resetPasswordError
 } from "./userSlice";
 const REACT_APP_BASE_URL = "http://localhost:5000";
-// const REACT_APP_BASE_URL = "https://lms-backend-mt7r.onrender.com"
 export const loginUser = (fields, role) => async (dispatch) => {
   dispatch(authRequest());
 
@@ -40,45 +39,18 @@ export const loginUser = (fields, role) => async (dispatch) => {
       console.log("Login failed:", result.data.message);
     }
   } catch (error) {
-    // dispatch(authError(error));
     console.log("Login error:", error.response?.data?.message || error.message);
     dispatch(authError(error.response?.data?.message || error.message || "Login failed"));
   }
 };
-// export const registerUser = (fields, role) => async (dispatch) => {
-//   dispatch(authRequest());
-
-//   try {
-//     const result = await axios.post(
-//       `${REACT_APP_BASE_URL}/${role}Reg`,
-//       fields,
-//       {
-//         headers: { "Content-Type": "application/json" },
-//       }
-//     );
-//     console.log("result", result)
-//     if (result.data.schoolName) {
-//       dispatch(authSuccess(result.data));
-//     } else if (result.data.school) {
-//       dispatch(stuffAdded());
-//     } else {
-//       dispatch(authFailed(result.data.message));
-//     }
-//   } catch (error) {
-//     dispatch(authError(error));
-//   }
-// };
-
 export const registerUser = (fields, role) => async (dispatch) => {
   dispatch(authRequest());
 
   try {
     let formData;
     let headers = {
-      "Content-Type": "application/json", // Default content type
+      "Content-Type": "application/json",
     };
-
-    // Check if fields contain a file (for multipart/form-data)
     const hasFile = Object.values(fields).some((value) => value instanceof File);
 
     if (hasFile) {
@@ -88,7 +60,7 @@ export const registerUser = (fields, role) => async (dispatch) => {
       }
       headers = { "Content-Type": "multipart/form-data" };
     } else {
-      formData = fields; // Send as JSON
+      formData = fields;
     }
 
     const result = await axios.post(
@@ -140,10 +112,6 @@ export const deleteUser = (id, address) => async (dispatch) => {
     dispatch(getError(error));
   }
 };
-// export const deleteUser = (id, address) => async (dispatch) => {
-//   dispatch(getRequest());
-//   dispatch(getFailed("Sorry the delete function has been disabled for now."));
-// };
 export const updateUser = (fields, id, address) => async (dispatch) => {
   dispatch(getRequest());
 
